@@ -11,7 +11,7 @@ def main():
     pd.set_option("display.width", 1000)
 
     # Load the feature store from the current path
-    fs = FeatureStore(repo_path=".")
+    fs = FeatureStore(repo_path="../../gpc_test")
 
     # Deploy the feature store to GCP
     print("Deploying feature store to GCP...")
