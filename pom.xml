@@ -12,6 +12,7 @@
         <module>kafka</module>
       <module>aws</module>
       <module>leetcode</module>
+      <module>flink</module>
     </modules>
 
     <properties>
