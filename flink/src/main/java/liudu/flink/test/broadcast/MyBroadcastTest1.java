@@ -34,7 +34,6 @@ public class MyBroadcastTest1 extends BroadcastProcessFunction<MyBeanData, Integ
   public void processBroadcastElement(Integer integer,
       BroadcastProcessFunction<MyBeanData, Integer, MyBeanData>.Context context,
       Collector<MyBeanData> collector) throws Exception {
-
     BroadcastState<Void, Integer> filter = context.getBroadcastState(descriptor);
     filter.clear();
     filter.put(null, integer);
