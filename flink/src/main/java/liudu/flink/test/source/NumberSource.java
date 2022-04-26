@@ -3,7 +3,7 @@ package liudu.flink.test.source;
 import java.util.Random;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
-public class MyIdSource implements SourceFunction<Integer> {
+public class NumberSource implements SourceFunction<Integer> {
 
   @Override
   public void run(SourceContext<Integer> sourceContext) throws Exception {
