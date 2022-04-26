@@ -1,5 +1,6 @@
 package liudu.flink.test;
 
+import java.time.Duration;
 import liudu.flink.test.bean.MyBeanData;
 import liudu.flink.test.source.MySource1;
 import org.apache.flink.api.common.eventtime.Watermark;
@@ -49,6 +50,17 @@ public class WatermarkProcess {
             };
           }
         });
+
+    //使用 forBoundedOutOfOrderness 生成 watermark
+    SingleOutputStreamOperator<MyBeanData> myBeanDataSingleOutputStreamOperator = dataStreamSource
+        .assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(
+            Duration.ofSeconds(3)));
+
+    //传入 event time 加 watermark
+    dataStreamSource.assignTimestampsAndWatermarks(
+        WatermarkStrategy.<MyBeanData>forBoundedOutOfOrderness(Duration.ofSeconds(3))
+            .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
+
 
   }
 

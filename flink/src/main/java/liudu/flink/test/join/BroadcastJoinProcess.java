@@ -1,4 +1,4 @@
-package liudu.flink.test;
+package liudu.flink.test.join;
 
 import liudu.flink.test.bean.MyBeanData;
 import liudu.flink.test.broadcast.MyBroadcastTest1;

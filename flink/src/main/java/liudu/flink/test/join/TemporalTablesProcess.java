@@ -1,4 +1,4 @@
-package liudu.flink.test;
+package liudu.flink.test.join;
 
 import java.time.LocalDateTime;
 import org.apache.flink.api.common.RuntimeExecutionMode;
