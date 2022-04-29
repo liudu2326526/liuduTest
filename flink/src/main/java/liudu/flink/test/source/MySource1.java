@@ -25,7 +25,8 @@ public class MySource1 implements SourceFunction<MyBeanData> {
         tempMap.put(key, newTmp);
 //        MyBeanData myBeanData = new MyBeanData(key, System.currentTimeMillis(), "liudu" + key);
 //        ctx.collectWithTimestamp(myBeanData, System.currentTimeMillis());
-        ctx.collect(new MyBeanData(key, System.currentTimeMillis(), "liudu" + key/2));
+        ctx.collect(new MyBeanData(key, System.currentTimeMillis() + random.nextInt(10) * 1000,
+            "liudu" + key / 2));
         Thread.sleep(1000L);
       }
 
