@@ -2,6 +2,7 @@ package liudu.leetcode;
 
 class Node {
 
+
   public int val;
   public Node left;
   public Node right;

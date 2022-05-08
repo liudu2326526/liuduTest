@@ -11,6 +11,7 @@ public class Number116 {
     return root;
   }
 
+
   public void connect(Node root, Node father, Boolean isLeft) {
     if (isLeft) {
       root.next = father.right;
