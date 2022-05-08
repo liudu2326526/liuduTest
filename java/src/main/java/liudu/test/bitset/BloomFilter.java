@@ -17,7 +17,6 @@ import lombok.extern.log4j.Log4j2;
  * @projectName liuduTest
  * @date 2022/5/7下午4:45
  */
-@Log4j2
 public class BloomFilter {
 
 

@@ -54,7 +54,7 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-mllib_${scala.version}</artifactId>
       <version>${spark.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
 
     <dependency>
@@ -75,5 +75,13 @@
       <artifactId>scala-library</artifactId>
       <version>${scala.full.version}</version>
     </dependency>
+
+
+<!--    <dependency>-->
+<!--      <groupId>org.roaringbitmap</groupId>-->
+<!--      <artifactId>RoaringBitmap</artifactId>-->
+<!--      <version>0.9.3</version>-->
+<!--    </dependency>-->
+
   </dependencies>
 </project>
