@@ -15,6 +15,7 @@
       <module>flink</module>
       <module>spark</module>
       <module>network</module>
+      <module>java</module>
     </modules>
 
     <properties>
