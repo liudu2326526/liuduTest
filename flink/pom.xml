@@ -15,7 +15,6 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <spark.version>2.4.3</spark.version>
-
     <hive.version>2.3.7</hive.version>
     <orc.version>1.5.6</orc.version>
     <aws.version>1.11.932</aws.version>
@@ -47,13 +46,13 @@
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-clients_2.11</artifactId>
+      <artifactId>flink-clients_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-java_2.11</artifactId>
+      <artifactId>flink-streaming-java_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
@@ -67,26 +66,26 @@
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-table-api-java-bridge_2.11</artifactId>
+      <artifactId>flink-table-api-java-bridge_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-table-planner-blink_2.11</artifactId>
+      <artifactId>flink-table-planner-blink_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
     <!--  orc  -->
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-orc_2.11</artifactId>
+      <artifactId>flink-orc_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-orc-nohive_2.11</artifactId>
+      <artifactId>flink-orc-nohive_${scala.version}</artifactId>
       <version>${flink.version}</version>
 <!--      <scope>provided</scope>-->
     </dependency>
