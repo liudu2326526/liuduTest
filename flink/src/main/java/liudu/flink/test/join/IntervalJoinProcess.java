@@ -1,9 +1,12 @@
 package liudu.flink.test.join;
 
+import java.time.Duration;
 import liudu.flink.test.bean.MyBeanData;
 import liudu.flink.test.source.MySource1;
 import liudu.flink.test.source.MySource2;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.co.ProcessJoinFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -21,11 +24,19 @@ public class IntervalJoinProcess {
   public static void main(String[] args) {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
-    DataStreamSource<MyBeanData> ds1 = env.addSource(new MySource1());
-    DataStreamSource<MyBeanData> ds2 = env.addSource(new MySource2());
+    SingleOutputStreamOperator<MyBeanData> ds1 = env.addSource(new MySource1())
+        //注入 watermark
+        .assignTimestampsAndWatermarks(
+            WatermarkStrategy.<MyBeanData>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
 
-    ds1.keyBy(user -> user.getId())
-        .intervalJoin(ds2.keyBy(user -> user.getId()))
+    SingleOutputStreamOperator<MyBeanData> ds2 = env.addSource(new MySource2())
+        .assignTimestampsAndWatermarks(
+            WatermarkStrategy.<MyBeanData>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
+
+    ds1.keyBy(MyBeanData::getId)
+        .intervalJoin(ds2.keyBy(MyBeanData::getId))
         .between(Time.milliseconds(-5), Time.milliseconds(5))
         .process(new ProcessJoinFunction<MyBeanData, MyBeanData, MyBeanData>() {
           @Override
