@@ -16,12 +16,12 @@ import org.apache.flink.util.Collector;
  * @author liudu
  * @title: IntervalJoinProcess
  * @projectName liuduTest
- * @description: TODO
+ * @description: https://mp.weixin.qq.com/s/_I1oE_pQXonQ9IoMsWIUzg
  * @date 2022/6/22下午3:53
  */
 public class IntervalJoinProcess {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
     SingleOutputStreamOperator<MyBeanData> ds1 = env.addSource(new MySource1())
@@ -35,17 +35,22 @@ public class IntervalJoinProcess {
             WatermarkStrategy.<MyBeanData>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                 .withTimestampAssigner((event, timestamp) -> event.getTimestamp()));
 
-    ds1.keyBy(MyBeanData::getId)
+    SingleOutputStreamOperator<MyBeanData> process = ds1.keyBy(MyBeanData::getId)
         .intervalJoin(ds2.keyBy(MyBeanData::getId))
-        .between(Time.milliseconds(-5), Time.milliseconds(5))
+        .between(Time.seconds(-5), Time.seconds(5))
         .process(new ProcessJoinFunction<MyBeanData, MyBeanData, MyBeanData>() {
           @Override
           public void processElement(MyBeanData myBeanData, MyBeanData myBeanData2, Context context,
               Collector<MyBeanData> collector) throws Exception {
-
+            MyBeanData result = new MyBeanData(myBeanData.getId(), myBeanData.getTimestamp(),
+                myBeanData.getMessage() + myBeanData2.getMessage());
+            collector.collect(result);
           }
         });
 
+    process.print();
+
+    env.execute();
   }
 
 }

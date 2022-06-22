@@ -23,8 +23,6 @@ public class MySource2 implements SourceFunction<MyBeanData> {
       for (Integer key : tempMap.keySet()) {
         Double newTmp = tempMap.get(key) + random.nextGaussian();
         tempMap.put(key, newTmp);
-//        MyBeanData myBeanData = new MyBeanData(key, System.currentTimeMillis(), "liudu" + key);
-//        ctx.collectWithTimestamp(myBeanData, System.currentTimeMillis());
         // 随机 0～10秒的延迟
         ctx.collect(new MyBeanData(key, System.currentTimeMillis() + random.nextInt(10) * 1000,
             "niupi" + key / 2));
