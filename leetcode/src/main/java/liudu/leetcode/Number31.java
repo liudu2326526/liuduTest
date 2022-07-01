@@ -54,8 +54,4 @@ public class Number31 {
 
   }
 
-  public void revers(int[] ints, int left, int right) {
-
-  }
-
 }
