@@ -25,6 +25,9 @@
         <scala.full.version>2.12.10</scala.full.version>
         <java.version>11</java.version>
         <spark.version>3.1.1</spark.version>
+        <hive.version>2.3.7</hive.version>
+        <orc.version>1.5.6</orc.version>
+        <aws.version>1.11.932</aws.version>
         <flink.version>1.13.2</flink.version>
     </properties>
 

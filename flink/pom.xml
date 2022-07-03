@@ -14,10 +14,6 @@
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <spark.version>2.4.3</spark.version>
-    <hive.version>2.3.7</hive.version>
-    <orc.version>1.5.6</orc.version>
-    <aws.version>1.11.932</aws.version>
   </properties>
 
   <dependencies>
@@ -32,11 +28,10 @@
     </dependency>
 
 
-
     <!-- flink core   -->
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka_2.11</artifactId>
+      <artifactId>flink-connector-kafka_${scala.version}</artifactId>
       <version>${flink.version}</version>
     </dependency>
     <dependency>
@@ -48,13 +43,13 @@
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-clients_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-streaming-java_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
 
     <!--  flink table api -->
@@ -62,32 +57,32 @@
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-table-common</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-table-api-java-bridge_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-table-planner-blink_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <!--  orc  -->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-orc_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-orc-nohive_${scala.version}</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
@@ -98,12 +93,31 @@
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-s3-fs-presto</artifactId>
       <version>${flink.version}</version>
-<!--      <scope>provided</scope>-->
+      <!--      <scope>provided</scope>-->
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-shaded-hadoop-3-uber</artifactId>
       <version>3.1.1.7.1.1.0-565-9.0</version>
+    </dependency>
+
+    <!--    flink cdc-->
+    <dependency>
+      <groupId>com.ververica</groupId>
+      <artifactId>flink-connector-mysql-cdc</artifactId>
+      <version>2.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.75</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.49</version>
     </dependency>
 
   </dependencies>
