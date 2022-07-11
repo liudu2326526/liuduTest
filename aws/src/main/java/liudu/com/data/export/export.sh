@@ -22,6 +22,8 @@ for((i=start_sec;i<=end_sec;i+=86400))
  echo $(date "+%Y%m%d-%H:%M:%S")  "all done ……"
  break;
 # nohup  ~/date_test.sh  > ~/date_test.log 2>&1 &
+
+
 start_date=20201102
 end_date=20201201
 start_sec=`date -d "$start_date" "+%s"`
