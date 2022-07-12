@@ -22,7 +22,31 @@ public class Number189 {
   public void rotate2(int[] nums, int k) {
     int length = nums.length;
     k = k % length;
-    //
+    int count = gcd(length, k);
+    for (int i = 0; i < count; i++) {
+      int start = i;
+      int pre = nums[i];
+      do {
+        start = (start + k) % length;
+        int tmp = nums[start];
+        nums[start] = pre;
+        pre = tmp;
+      } while (start != i);
+    }
 
   }
+
+  public static void main(String[] args) {
+    int[] nums = {1, 2, 3, 4, 5, 6, 7};
+    int k = 3;
+    new Number189().rotate2(nums, k);
+    for (int i = 0; i < nums.length; i++) {
+      System.out.print(nums[i] + ",");
+    }
+  }
+
+  public int gcd(int x, int y) {
+    return y > 0 ? gcd(y, x % y) : x;
+  }
+
 }
