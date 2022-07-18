@@ -11,5 +11,14 @@
 
   <artifactId>java</artifactId>
 
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.roaringbitmap/RoaringBitmap -->
+    <dependency>
+      <groupId>org.roaringbitmap</groupId>
+      <artifactId>RoaringBitmap</artifactId>
+      <version>0.9.30</version>
+    </dependency>
+
+  </dependencies>
 
 </project>

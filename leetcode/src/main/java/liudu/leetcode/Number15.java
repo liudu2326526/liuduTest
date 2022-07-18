@@ -4,41 +4,43 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author liudu
+ * @title: Number15
+ * @projectName liuduTest
+ * @description: 三数之和
+ * @date 2022/7/15下午4:23
+ */
 public class Number15 {
 
   public List<List<Integer>> threeSum(int[] nums) {
     Arrays.sort(nums);
-
     ArrayList<List<Integer>> result = new ArrayList<>();
 
-    for (int i = 0; i < nums.length - 1; i++) {
-      if (i > 0 && nums[i] == nums[i - 1]) {
+    for (int a = 0; a < nums.length - 1; a++) {
+      if (a > 0 && nums[a] == nums[a - 1]) {
         continue;
       }
-      int l = i + 1;
-      int r = nums.length - 1;
-      while (l < r) {
-        int sum = nums[i] + nums[l] + nums[r];
-        if (sum > 0) {
-          r--;
-        } else if (sum < 0) {
-          l++;
-        } else {
-          result.add(Arrays.asList(nums[i], nums[l], nums[r]));
 
-          while (l < r && nums[l] == nums[l + 1]) {
-            l++;
-          }
-          while (l < r && nums[r] == nums[r - 1]) {
-            r--;
-          }
-          l++;
-          r--;
+      int left = a + 1;
+      int right = nums.length - 1;
+      while (left < right) {
+        while (nums[a] + nums[left] + nums[right] > 0) {
+          right--;
         }
-
+        if (left == right){
+          break;
+        }
+        if (nums[a] + nums[left] + nums[right] == 0) {
+          ArrayList<Integer> list = new ArrayList<>();
+          list.add(nums[a]);
+          list.add(nums[right]);
+          list.add(nums[left]);
+          result.add(list);
+        }
+        left++;
       }
     }
     return result;
   }
-
 }
