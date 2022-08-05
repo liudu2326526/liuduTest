@@ -35,6 +35,8 @@ public class CustomDebeziumDeserializationSchema implements
       Struct valueStruct = (Struct) sourceRecord.value();
       Struct afterStruct = valueStruct.getStruct("after");
       Struct beforeStruct = valueStruct.getStruct("before");
+      Struct sourceStruct = valueStruct.getStruct("source");
+      putSchema(sourceStruct, resJson);
       // 注意：若valueStruct中只有after,则表明插入；若只有before，说明删除；若既有before，也有after，则代表更新
       if (afterStruct != null && beforeStruct != null) {
         // 修改
@@ -73,6 +75,11 @@ public class CustomDebeziumDeserializationSchema implements
     }
     collector.collect(resJson);
 
+  }
+
+  private void putSchema(Struct struct, JSONObject resJson) {
+    resJson.put("db", struct.get("db"));
+    resJson.put("table", struct.get("table"));
   }
 
   @Override
