@@ -1,0 +1,59 @@
+image: 130132914922.dkr.ecr.us-east-1.amazonaws.com/ci-base/java8/v1:latest
+
+variables:
+  COMMON_MAVEN_CLI_OPTS: "--batch-mode --no-transfer-progress"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  PROCESSOR_FILE_REGEX_PATTERN: '.*bigdata-flow-[0-9\.]*\.jar'
+  LOG_PROPERTIES_FILE: 'log4j.properties'
+  PROD_S3_LOCATION: "s3://dywx-data/app/"
+  KUBERNETES_S3_LOCATION: "s3://dywx-data/app/kubernetes/"
+  DEV_S3_LOCATION: "s3://dywx-beginner/dev/jar/"
+
+cache:
+  paths:
+    - .m2/repository/
+
+compile:
+  stage: build
+  script:
+    - mvn $COMMON_MAVEN_CLI_OPTS -Dmaven.test.skip=true
+      compile
+  only:
+    - merge_requests
+
+check_sytle:
+  stage: build
+  script:
+    - mvn $COMMON_MAVEN_CLI_OPTS
+      org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check
+      -Dcheckstyle.config.location="/root/dywx-checkstyle.xml"
+      -Dcheckstyle.suppressions.location="/root/dywx-checkstyle-suppression.xml"
+  only:
+    - merge_requests
+
+release_processor_to_s3:
+  stage: deploy
+  script:
+    - mvn $COMMON_MAVEN_CLI_OPTS clean package
+    - "find . -type f -regex \"$PROCESSOR_FILE_REGEX_PATTERN\" -exec aws s3 cp \"{}\" $PROD_S3_LOCATION --storage-class REDUCED_REDUNDANCY \\;"
+  when: manual
+  only:
+    - master
+
+dev_processor_to_s3:
+  stage: deploy
+  script:
+    - mvn $COMMON_MAVEN_CLI_OPTS clean package
+    - "find . -type f -regex \"$PROCESSOR_FILE_REGEX_PATTERN\" -exec aws s3 cp \"{}\" $DEV_S3_LOCATION --storage-class REDUCED_REDUNDANCY \\;"
+    - "aws s3 cp target/classes/log4j.properties $DEV_S3_LOCATION --storage-class REDUCED_REDUNDANCY"
+  when: manual
+
+kubernetes_processor_to_s3:
+  stage: deploy
+  script:
+    - mvn $COMMON_MAVEN_CLI_OPTS clean package
+    - "find . -type f -regex \"$PROCESSOR_FILE_REGEX_PATTERN\" -exec aws s3 cp \"{}\" $KUBERNETES_S3_LOCATION --storage-class REDUCED_REDUNDANCY \\;"
+    - "aws s3 cp target/classes/log4j.properties $KUBERNETES_S3_LOCATION --storage-class REDUCED_REDUNDANCY"
+  when: manual
+  only:
+    - master
