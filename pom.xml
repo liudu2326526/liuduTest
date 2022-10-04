@@ -17,6 +17,7 @@
       <module>network</module>
       <module>java</module>
         <module>calcite</module>
+        <module>huawei</module>
     </modules>
 
     <properties>
