@@ -18,6 +18,7 @@
       <module>java</module>
         <module>calcite</module>
         <module>huawei</module>
+      <module>huawei-udf</module>
     </modules>
 
     <properties>
