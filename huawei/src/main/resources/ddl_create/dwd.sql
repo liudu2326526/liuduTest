@@ -102,3 +102,50 @@ CREATE TABLE prod_dwd.dwd_mip_article_detail_inc_hourly
     STORED AS ORC
     LOCATION 'obs://donson-mip-data/prod/dwd/article'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");
+
+DROP TABLE prod_dwd.dwd_mip_media_detail_inc_hourly;
+
+CREATE TABLE prod_dwd.dwd_mip_media_detail_inc_hourly
+(
+    `_id`            STRING,
+    source           BIGINT,
+    id               STRING,
+    author_id        STRING,
+    media_id         STRING,
+    cover            STRING,
+    title            STRING,
+    share_url        STRING,
+    duration         STRING,
+    status           STRING,
+    keyword          STRING,
+    `desc`           STRING,
+    group_name       STRING,
+    inner_group_name STRING,
+    topic            STRING,
+    tags             STRING,
+    activity_tags    STRING,
+    related_user     STRING,
+    bg_music         STRING,
+    author_name      STRING,
+    author_cover     STRING,
+    author_account   STRING,
+    media_url        STRING,
+    media_image_url  STRING,
+    media_audio_url  STRING,
+    adorable_cnt     BIGINT,
+    comment_cnt      BIGINT,
+    share_cnt        BIGINT,
+    collect_cnt      BIGINT,
+    play_cnt         BIGINT,
+    coin_cnt         BIGINT,
+    barrage_cnt      BIGINT,
+    click_cnt        BIGINT,
+    `rank`           BIGINT,
+    `time`           BIGINT,
+    ctime            BIGINT,
+    mtime            BIGINT
+)
+    PARTITIONED BY (dt STRING,hour STRING)
+    STORED AS ORC
+    LOCATION 'obs://donson-mip-data/prod/dwd/media'
+    TBLPROPERTIES ("orc.compression" = "SNAPPY");
