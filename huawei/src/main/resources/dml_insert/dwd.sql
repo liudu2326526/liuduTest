@@ -178,3 +178,36 @@ SELECT get_json_object(data, '$.data._id')                         _id,
 FROM prod_ods.ods_mip_media_raw
 WHERE dt = '${dt}'
   AND hour = '${hour}';
+
+
+-- prod_ods.ods_mip_comment_raw to prod_dwd.dwd_mip_comment_detail_inc_hourly
+
+INSERT OVERWRITE TABLE prod_dwd.dwd_mip_comment_detail_inc_hourly PARTITION (dt, hour)
+SELECT get_json_object(data, '$.data._id')                 _id,
+       get_json_object(data, '$.data.source')              source,
+       get_json_object(data, '$.data.id')                  id,
+       get_json_object(data, '$.data.item_id')             item_id,
+       get_json_object(data, '$.data.comment_pid')         comment_pid,
+       get_json_object(data, '$.data.comment_id')          comment_id,
+       get_json_object(data, '$.data.commentor_id')        commentor_id,
+       get_json_object(data, '$.data.commentor_name')      commentor_name,
+       get_json_object(data, '$.data.commentor_avatar')    commentor_avatar,
+       get_json_object(data, '$.data.content')             content,
+
+       get_json_object(data, '$.data.comment_data.device') device,
+
+       get_json_object(json_array_get_last(get_json_object(data, '$.data.report_data')),
+                       '$.adorable_cnt')                   adorable_cnt,
+       get_json_object(json_array_get_last(get_json_object(data, '$.data.report_data')),
+                       '$.down_cnt')                       down_cnt,
+       get_json_object(json_array_get_last(get_json_object(data, '$.data.report_data')),
+                       '$.comment_cnt')                    comment_cnt,
+       get_json_object(json_array_get_last(get_json_object(data, '$.data.report_data')),
+                       '$.time')                           time,
+       get_json_object(data, '$.data.ctime')               ctime,
+       get_json_object(data, '$.data.mtime')               mtime,
+       dt,
+       hour
+FROM prod_ods.ods_mip_comment_raw
+WHERE dt = '${dt}'
+  AND hour = '${hour}';
