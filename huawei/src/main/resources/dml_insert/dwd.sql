@@ -1,6 +1,10 @@
+-- dt = #{DateUtil.format(DateUtil.addHours(Job.planTime,-1),'yyyy-MM-dd')}
+-- hour = #{DateUtil.format(DateUtil.addHours(Job.planTime,-1),'HH')}
+-- env = prod
+
 -- prod_ods.ods_mip_author_raw to prod_dwd.dwd_mip_author_detail_inc_hourly
 
-INSERT OVERWRITE TABLE prod_dwd.dwd_mip_author_detail_inc_hourly PARTITION (dt, hour)
+INSERT OVERWRITE TABLE ${env}_dwd.dwd_mip_author_detail_inc_hourly PARTITION (dt, hour)
 SELECT get_json_object(data, '$.data._id')                          _id,
        get_json_object(data, '$.data.source')                       source,
        get_json_object(data, '$.data.type')                         type,
@@ -62,7 +66,7 @@ WHERE dt = '${dt}'
 
 -- prod_ods.ods_mip_article_raw to prod_dwd.dwd_mip_article_detail_inc_hourly
 
-INSERT OVERWRITE TABLE prod_dwd.dwd_mip_article_detail_inc_hourly PARTITION (dt, hour)
+INSERT OVERWRITE TABLE ${env}_dwd.dwd_mip_article_detail_inc_hourly PARTITION (dt, hour)
 SELECT get_json_object(data, '$.data._id')                           _id,
        get_json_object(data, '$.data.source')                        source,
        get_json_object(data, '$.data.id')                            id,
@@ -125,7 +129,7 @@ WHERE dt = '${dt}'
 
 -- prod_ods.ods_mip_media_raw to prod_dwd.dwd_mip_media_detail_inc_hourly
 
-INSERT OVERWRITE TABLE prod_dwd.dwd_mip_media_detail_inc_hourly PARTITION (dt, hour)
+INSERT OVERWRITE TABLE ${env}_dwd.dwd_mip_media_detail_inc_hourly PARTITION (dt, hour)
 SELECT get_json_object(data, '$.data._id')                         _id,
        get_json_object(data, '$.data.source')                      source,
        get_json_object(data, '$.data.id')                          id,
@@ -182,7 +186,7 @@ WHERE dt = '${dt}'
 
 -- prod_ods.ods_mip_comment_raw to prod_dwd.dwd_mip_comment_detail_inc_hourly
 
-INSERT OVERWRITE TABLE prod_dwd.dwd_mip_comment_detail_inc_hourly PARTITION (dt, hour)
+INSERT OVERWRITE TABLE ${env}_dwd.dwd_mip_comment_detail_inc_hourly PARTITION (dt, hour)
 SELECT get_json_object(data, '$.data._id')                 _id,
        get_json_object(data, '$.data.source')              source,
        get_json_object(data, '$.data.id')                  id,
