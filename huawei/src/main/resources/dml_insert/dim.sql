@@ -1,0 +1,60 @@
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt)
+SELECT id,
+       name,
+       user_id,
+       begin_date,
+       end_date,
+       type,
+       status,
+       edit_cnt,
+       is_deleted,
+       `describe`,
+       object,
+       stage,
+       activity_type,
+       single_type,
+       single_cycle,
+       single_frequency,
+       insight_source,
+       is_comment,
+       ext,
+       mtime,
+       ctime,
+       is_notice,
+       href,
+       '2022-10-18' dt
+FROM (
+         SELECT *,
+                row_number() over (partition by id ORDER BY log_time desc) rn
+         FROM (
+                  SELECT get_json_object(data, '$.id')               id,
+                         get_json_object(data, '$.name')             name,
+                         get_json_object(data, '$.user_id')          user_id,
+                         from_unixtime(get_json_object(data, '$.begin_date') * 60 * 60 * 24,
+                                       'yyyy-MM-dd')                 begin_date,
+                         from_unixtime(get_json_object(data, '$.end_date') * 60 * 60 * 24,
+                                       'yyyy-MM-dd')                 end_date,
+                         get_json_object(data, '$.type')             type,
+                         get_json_object(data, '$.status')           status,
+                         get_json_object(data, '$.edit_cnt')         edit_cnt,
+                         get_json_object(data, '$.is_deleted')       is_deleted,
+                         get_json_object(data, '$.describe')         `describe`,
+                         get_json_object(data, '$.object')           object,
+                         get_json_object(data, '$.stage')            stage,
+                         get_json_object(data, '$.activity_type')    activity_type,
+                         get_json_object(data, '$.single_type')      single_type,
+                         get_json_object(data, '$.single_cycle')     single_cycle,
+                         get_json_object(data, '$.single_frequency') single_frequency,
+                         get_json_object(data, '$.insight_source')   insight_source,
+                         get_json_object(data, '$.is_comment')       is_comment,
+                         get_json_object(data, '$.ext')              ext,
+                         get_json_object(data, '$.mtime')            mtime,
+                         get_json_object(data, '$.ctime')            ctime,
+                         get_json_object(data, '$.is_notice')        is_notice,
+                         get_json_object(data, '$.href')             href,
+                         get_json_object(data, '$.log_time')         log_time
+                  FROM prod_ods.ods_mip_be_mysql_raw
+                  WHERE dt = '2022-10-18'
+                    AND `table` = 'activity')
+     )
+WHERE rn = 1

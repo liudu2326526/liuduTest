@@ -1,6 +1,6 @@
 package liudu.flink.test.join;
 
-import avro.shaded.com.google.common.collect.Lists;
+import com.google.common.collect.Lists;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.List;
