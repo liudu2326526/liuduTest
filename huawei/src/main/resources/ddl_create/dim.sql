@@ -1,3 +1,5 @@
+DROP TABLE prod_dim.dim_mysql_mip_activity_scd_daily;
+
 CREATE TABLE prod_dim.dim_mysql_mip_activity_scd_daily
 (
     `id`               STRING COMMENT 'id',
@@ -28,6 +30,7 @@ CREATE TABLE prod_dim.dim_mysql_mip_activity_scd_daily
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");
 
+DROP TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily;
 
 CREATE TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily
 (
@@ -47,4 +50,29 @@ CREATE TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily
 ) PARTITIONED BY (dt STRING)
     STORED AS ORC
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_account_config_scd_daily'
+    TBLPROPERTIES ("orc.compression" = "SNAPPY");
+
+CREATE TABLE dim_mysql_mip_activity_content_config_scd_daily
+(
+    `id`             BIGINT,
+    `activity_id`    STRING COMMENT '活动id',
+    `source`         BIGINT COMMENT '媒体',
+    `author_id`      STRING COMMENT '作者id',
+    `content`        STRING COMMENT '内容',
+    `avatar`         STRING COMMENT '头像url',
+    `ctime`          BIGINT COMMENT '添加时间戳',
+    `mtime`          BIGINT COMMENT '修改时间戳',
+    `budget`         BIGINT COMMENT '该内容关联的作者预算 -1表示没设置预算',
+    `is_deleted`     BIGINT COMMENT '是否删除 1:否 2:是',
+    `author_name`    STRING COMMENT '作者名字',
+    `content_type`   BIGINT COMMENT '作品类型 1视频 2 图文',
+    `cover`          STRING COMMENT '封面',
+    `kol_level`      BIGINT COMMENT '作者等级',
+    `ori_content_id` STRING COMMENT '内容源id',
+    `dwd_content_id` STRING COMMENT '内容id',
+    `type`           BIGINT COMMENT '1 来自采集 2 来自数据组',
+    `title`          STRING COMMENT '内容标题'
+) PARTITIONED BY (dt STRING)
+    STORED AS ORC
+    LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_content_config_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");

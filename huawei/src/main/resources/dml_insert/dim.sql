@@ -1,6 +1,7 @@
+-- spark.sql.shuffle.partitions = 1
 -- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_scd_daily
 
-INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt)
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt) distribute by rand()
 SELECT id,
        name,
        user_id,
@@ -59,12 +60,12 @@ FROM (
                   WHERE dt = '2022-10-18'
                     AND `table` = 'activity')
      )
-WHERE rn = 1 ;
+WHERE rn = 1;
 
 
--- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_scd_daily
+-- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_account_config_scd_daily
 
-INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt)
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily PARTITION (dt)
 SELECT id,
        activity_id,
        source,
@@ -96,6 +97,57 @@ FROM (
                          get_json_object(data, '$.mtime')          mtime,
                          get_json_object(data, '$.is_cooperation') is_cooperation,
                          get_json_object(data, '$.is_deleted')     is_deleted,
+                         get_json_object(data, '$.log_time')       log_time
+                  FROM prod_ods.ods_mip_be_mysql_raw
+                  WHERE dt = '2022-10-18'
+                    AND `table` = 'activity_account_config')
+     )
+WHERE rn = 1 ;
+
+-- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_content_config_scd_daily
+
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_content_config_scd_daily PARTITION (dt)
+SELECT id,
+       activity_id,
+       source,
+       author_id,
+       content,
+       avatar,
+       ctime,
+       mtime,
+       budget,
+       is_deleted,
+       author_name,
+       content_type,
+       cover,
+       kol_level,
+       ori_content_id,
+       dwd_content_id,
+       type,
+       title,
+       '2022-10-18' dt
+FROM (
+         SELECT *,
+                row_number() over (partition by id ORDER BY log_time desc) rn
+         FROM (
+                  SELECT get_json_object(data, '$.id')             id,
+                         get_json_object(data, '$.name')           activity_id,
+                         get_json_object(data, '$.source')         source,
+                         get_json_object(data, '$.author_id')      author_id,
+                         get_json_object(data, '$.content')        content,
+                         get_json_object(data, '$.avatar')         avatar,
+                         get_json_object(data, '$.ctime')          ctime,
+                         get_json_object(data, '$.mtime')          mtime,
+                         get_json_object(data, '$.budget')         budget,
+                         get_json_object(data, '$.is_deleted')     is_deleted,
+                         get_json_object(data, '$.author_name')    author_name,
+                         get_json_object(data, '$.content_type')   content_type,
+                         get_json_object(data, '$.cover')          cover,
+                         get_json_object(data, '$.kol_level')      kol_level,
+                         get_json_object(data, '$.ori_content_id') ori_content_id,
+                         get_json_object(data, '$.dwd_content_id') dwd_content_id,
+                         get_json_object(data, '$.type')           type,
+                         get_json_object(data, '$.title')          title,
                          get_json_object(data, '$.log_time')       log_time
                   FROM prod_ods.ods_mip_be_mysql_raw
                   WHERE dt = '2022-10-18'
