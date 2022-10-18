@@ -23,8 +23,28 @@ CREATE TABLE prod_dim.dim_mysql_mip_activity_scd_daily
     `ctime`            BIGINT COMMENT '创建时间戳',
     `is_notice`        INT COMMENT '1 不提示 2 提示',
     `href`             STRING COMMENT '单贴监测，账号主页链接 or 内容链接'
-)
-    PARTITIONED BY (dt STRING)
+) PARTITIONED BY (dt STRING)
     STORED AS ORC
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_scd_daily'
+    TBLPROPERTIES ("orc.compression" = "SNAPPY");
+
+
+CREATE TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily
+(
+    `id`             BIGINT,
+    `activity_id`    STRING COMMENT '活动id',
+    `source`         BIGINT COMMENT '媒体',
+    `author_id`      STRING COMMENT '爬虫作者id',
+    `dwd_author_id`  STRING COMMENT '数据组作者id',
+    `name`           STRING COMMENT '名称',
+    `budget`         BIGINT COMMENT '预算，单位分',
+    `avatar`         STRING COMMENT '头像url',
+    `fans_cnt`       BIGINT COMMENT '粉比数',
+    `ctime`          BIGINT COMMENT '添加时间戳',
+    `mtime`          BIGINT COMMENT '修改时间戳',
+    `is_cooperation` BIGINT COMMENT '1:合作 2:不合作',
+    `is_deleted`     BIGINT COMMENT '是否删除 1:否 2:是'
+) PARTITIONED BY (dt STRING)
+    STORED AS ORC
+    LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_account_config_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");

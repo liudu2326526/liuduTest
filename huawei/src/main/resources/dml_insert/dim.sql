@@ -1,3 +1,5 @@
+-- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_scd_daily
+
 INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt)
 SELECT id,
        name,
@@ -56,5 +58,47 @@ FROM (
                   FROM prod_ods.ods_mip_be_mysql_raw
                   WHERE dt = '2022-10-18'
                     AND `table` = 'activity')
+     )
+WHERE rn = 1 ;
+
+
+-- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_scd_daily
+
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_scd_daily PARTITION (dt)
+SELECT id,
+       activity_id,
+       source,
+       author_id,
+       dwd_author_id,
+       name,
+       budget,
+       avatar,
+       fans_cnt,
+       ctime,
+       mtime,
+       is_cooperation,
+       is_deleted,
+       '2022-10-18' dt
+FROM (
+         SELECT *,
+                row_number() over (partition by id ORDER BY log_time desc) rn
+         FROM (
+                  SELECT get_json_object(data, '$.id')             id,
+                         get_json_object(data, '$.name')           activity_id,
+                         get_json_object(data, '$.source')         source,
+                         get_json_object(data, '$.author_id')      author_id,
+                         get_json_object(data, '$.dwd_author_id')  dwd_author_id,
+                         get_json_object(data, '$.name')           name,
+                         get_json_object(data, '$.budget')         budget,
+                         get_json_object(data, '$.avatar')         avatar,
+                         get_json_object(data, '$.fans_cnt')       fans_cnt,
+                         get_json_object(data, '$.ctime')          ctime,
+                         get_json_object(data, '$.mtime')          mtime,
+                         get_json_object(data, '$.is_cooperation') is_cooperation,
+                         get_json_object(data, '$.is_deleted')     is_deleted,
+                         get_json_object(data, '$.log_time')       log_time
+                  FROM prod_ods.ods_mip_be_mysql_raw
+                  WHERE dt = '2022-10-18'
+                    AND `table` = 'activity_account_config')
      )
 WHERE rn = 1
