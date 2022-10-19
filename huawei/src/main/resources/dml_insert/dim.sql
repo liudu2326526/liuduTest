@@ -102,7 +102,7 @@ FROM (
                   WHERE dt = '2022-10-18'
                     AND `table` = 'activity_account_config')
      )
-WHERE rn = 1 ;
+WHERE rn = 1;
 
 -- prod_ods.ods_mip_be_mysql_raw to prod_dim.dim_mysql_mip_activity_content_config_scd_daily
 
@@ -151,6 +151,42 @@ FROM (
                          get_json_object(data, '$.log_time')       log_time
                   FROM prod_ods.ods_mip_be_mysql_raw
                   WHERE dt = '2022-10-18'
-                    AND `table` = 'activity_account_config')
+                    AND `table` = 'activity_content_config')
+     )
+WHERE rn = 1;
+
+
+INSERT OVERWRITE TABLE prod_dim.dim_mysql_mip_activity_platform_config_scd_daily PARTITION (dt)
+SELECT id,
+       activity_id,
+       budget,
+       source,
+       include_kws,
+       exclude_kws,
+       ext,
+       update_at,
+       create_at,
+       is_deleted,
+       `sort`,
+       '2022-10-18' dt
+FROM (
+         SELECT *,
+                row_number() over (partition by id ORDER BY log_time desc) rn
+         FROM (
+                  SELECT get_json_object(data, '$.id')          id,
+                         get_json_object(data, '$.activity_id') activity_id,
+                         get_json_object(data, '$.budget')      budget,
+                         get_json_object(data, '$.source')      source,
+                         get_json_object(data, '$.include_kws') include_kws,
+                         get_json_object(data, '$.exclude_kws') exclude_kws,
+                         get_json_object(data, '$.ext')         ext,
+                         get_json_object(data, '$.update_at')   update_at,
+                         get_json_object(data, '$.create_at')   create_at,
+                         get_json_object(data, '$.is_deleted')  is_deleted,
+                         get_json_object(data, '$.sort')        `sort`,
+                         get_json_object(data, '$.log_time')    log_time
+                  FROM prod_ods.ods_mip_be_mysql_raw
+                  WHERE dt = '2022-10-18'
+                    AND `table` = 'activity_platform_config')
      )
 WHERE rn = 1

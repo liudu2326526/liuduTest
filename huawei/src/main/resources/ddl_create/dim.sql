@@ -52,7 +52,7 @@ CREATE TABLE prod_dim.dim_mysql_mip_activity_account_config_scd_daily
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_account_config_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");
 
-CREATE TABLE dim_mysql_mip_activity_content_config_scd_daily
+CREATE TABLE prod_dim.dim_mysql_mip_activity_content_config_scd_daily
 (
     `id`             BIGINT,
     `activity_id`    STRING COMMENT '活动id',
@@ -75,4 +75,23 @@ CREATE TABLE dim_mysql_mip_activity_content_config_scd_daily
 ) PARTITIONED BY (dt STRING)
     STORED AS ORC
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_content_config_scd_daily'
+    TBLPROPERTIES ("orc.compression" = "SNAPPY");
+
+
+CREATE TABLE prod_dim.dim_mysql_mip_activity_platform_config_scd_daily
+(
+    `id`          BIGINT,
+    `activity_id` STRING COMMENT '活动id',
+    `budget`      BIGINT COMMENT '预算 -1表示没设置预算',
+    `source`      BIGINT COMMENT '媒体',
+    `include_kws` STRING COMMENT '源关键词',
+    `exclude_kws` STRING COMMENT '非关键词',
+    `ext`         STRING COMMENT '扩展：json数据',
+    `update_at`   STRING COMMENT '修改时间',
+    `create_at`   STRING COMMENT '创建时间',
+    `is_deleted`  BIGINT COMMENT '是否删除 1:否 2:是',
+    `sort`        BIGINT COMMENT '分组使用'
+) PARTITIONED BY (dt STRING)
+    STORED AS ORC
+    LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_platform_config_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");
