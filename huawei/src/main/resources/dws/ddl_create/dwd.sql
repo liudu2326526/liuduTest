@@ -1,6 +1,7 @@
 -- 创建 obs 连接
 
-CREATE SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
+CREATE
+SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
     OPTIONS (
     address 'obs.cn-south-1.myhuaweicloud.com' ,
     ACCESS_KEY 'D4X34IUUCG7PRDHPZEN5',
@@ -11,11 +12,11 @@ CREATE SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
 
 -- 创建 obs 连接
 
-CREATE FOREIGN TABLE dwd_mip_author_detail_inc_hourly
+CREATE FOREIGN TABLE dwd.dwd_mip_author_detail_inc_hourly
 (
-    `_id`              TEXT,
+    _id                TEXT,
     source             BIGINT,
-    `type`             BIGINT,
+    type               BIGINT,
     id                 TEXT,
     author_id          TEXT,
     avatar             TEXT,
@@ -46,7 +47,7 @@ CREATE FOREIGN TABLE dwd_mip_author_detail_inc_hourly
     has_live           TEXT,
     ip_location        TEXT,
     mcn                TEXT,
-    `level`            TEXT,
+    level              TEXT,
     follow_cnt         BIGINT,
     fans_cnt           BIGINT,
     works_cnt          BIGINT,
@@ -54,11 +55,11 @@ CREATE FOREIGN TABLE dwd_mip_author_detail_inc_hourly
     praised_cnt        BIGINT,
     forward_cnt        BIGINT,
     comment_cnt        BIGINT,
-    `time`             BIGINT,
+    time               BIGINT,
     ctime              BIGINT,
     mtime              BIGINT,
     dt                 TEXT,
-    `hour`             TEXT
+    hour               TEXT
 ) SERVER obs_server
 OPTIONS (
 format 'orc',
@@ -67,4 +68,4 @@ encoding 'utf8',
 totalrows '100000'
 )
 DISTRIBUTE BY ROUNDROBIN
-PARTITION BY (dt,`hour`) AUTOMAPPED;
+PARTITION BY (dt,hour) AUTOMAPPED;
