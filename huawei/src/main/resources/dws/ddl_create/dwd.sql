@@ -1,7 +1,9 @@
+-- 权限 jdbc 账号
+GRANT USAGE ON SCHEMA dim TO jdbc;
+
 -- 创建 obs 连接
 
-CREATE
-SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
+CREATE SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
     OPTIONS (
     address 'obs.cn-south-1.myhuaweicloud.com' ,
     ACCESS_KEY 'D4X34IUUCG7PRDHPZEN5',

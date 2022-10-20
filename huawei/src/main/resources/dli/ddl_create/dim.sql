@@ -95,3 +95,16 @@ CREATE TABLE prod_dim.dim_mysql_mip_activity_platform_config_scd_daily
     STORED AS ORC
     LOCATION 'obs://donson-mip-data/prod/dim/dim_mysql_mip_activity_platform_config_scd_daily'
     TBLPROPERTIES ("orc.compression" = "SNAPPY");
+
+
+CREATE EXTERNAL TABLE `prod_dim`.`dim_china_area`
+(
+    `id`   BIGINT,
+    `country` STRING,
+    `province` STRING,
+    `city` STRING,
+    `region` STRING
+)
+    ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    STORED AS TEXTFILE
+    LOCATION 'obs://donson-mip-data/prod/dim/china_area'
