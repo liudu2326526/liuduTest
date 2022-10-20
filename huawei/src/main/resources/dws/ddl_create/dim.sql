@@ -1,3 +1,7 @@
+-- dim.dim_author_scd_hourly
+
+DROP TABLE dim.dim_author_scd_hourly;
+
 CREATE TABLE IF NOT EXISTS dim.dim_author_scd_hourly
 (
     md5_author_id      TEXT PRIMARY KEY COMMENT 'md5(concat(cast(source as varchar),author_id))',
@@ -41,6 +45,10 @@ CREATE TABLE IF NOT EXISTS dim.dim_author_scd_hourly
 )
 WITH (ORIENTATION = COLUMN, COLVERSION=2.0, ENABLE_DELTA = ON, COMPRESSION = LOW);
 
+-- dim.dim_kol_level
+
+DROP TABLE dim.dim_kol_level;
+
 CREATE TABLE IF NOT EXISTS dim.dim_kol_level
 (
     kol_level INTEGER NOT NULL COMMENT 'KOL等级值,1-头部KOL,2-肩部KOL;3-腰部KOL;4-尾部KOL;5-普通用户',
@@ -53,3 +61,28 @@ CREATE TABLE IF NOT EXISTS dim.dim_kol_level
     CONSTRAINT pk PRIMARY KEY (kol_level, source)
 )
 WITH (ORIENTATION = COLUMN, COLVERSION=2.0, ENABLE_DELTA = ON);
+
+-- dim.china_area
+
+DROP FOREIGN TABLE dim.china_area;
+
+CREATE FOREIGN TABLE dim.china_area
+(
+    id       INTEGER,
+    country  char(50),
+    province char(50),
+    city     char(50),
+    region   char(50)
+) SERVER gsmpp_server
+OPTIONS(
+    LOCATION 'obs://donson-mip-data/prod/dim/china_area',
+    FORMAT 'CSV' ,
+    DELIMITER ',',
+    encoding 'utf8',
+    header 'false',
+    ACCESS_KEY 'D4X34IUUCG7PRDHPZEN5',
+    SECRET_ACCESS_KEY 'm4Wb41ZYQvJ5AVon7XnQ4T1MpsGIusXeZOzoYk1e',
+    fill_missing_fields 'true',
+    ignore_extra_data 'true'
+)
+READ ONLY
