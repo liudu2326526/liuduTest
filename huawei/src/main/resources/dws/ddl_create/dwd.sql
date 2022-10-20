@@ -1,5 +1,5 @@
 -- 权限 jdbc 账号
-GRANT USAGE ON SCHEMA dim TO jdbc;
+GRANT ALL ON ALL TABLES IN SCHEMA dim TO jdbc;
 
 -- 创建 obs 连接
 
@@ -14,6 +14,8 @@ CREATE SERVER obs_server FOREIGN DATA WRAPPER dfs_fdw
 
 -- 创建 obs 连接
 
+DROP FOREIGN TABLE dwd.dwd_mip_author_detail_inc_hourly;
+
 CREATE FOREIGN TABLE dwd.dwd_mip_author_detail_inc_hourly
 (
     _id                TEXT,
@@ -27,26 +29,26 @@ CREATE FOREIGN TABLE dwd.dwd_mip_author_detail_inc_hourly
     keyword            TEXT,
     identify           TEXT,
     officially         TEXT,
-    officially_type    TEXT,
+    officially_type    BIGINT,
     officially_details TEXT,
-    is_certified       TEXT,
+    is_certified       BIGINT,
     intro              TEXT,
     sign               TEXT,
     category           TEXT,
     home_page          TEXT,
     tags               TEXT,
-    age                TEXT,
+    age                BIGINT,
     birthday           TEXT,
     area               TEXT,
-    gender             TEXT,
+    gender             BIGINT,
     industry           TEXT,
     brand_cooperation  TEXT,
     company            TEXT,
     email              TEXT,
     school             TEXT,
     website            TEXT,
-    has_shop           TEXT,
-    has_live           TEXT,
+    has_shop           BIGINT,
+    has_live           BIGINT,
     ip_location        TEXT,
     mcn                TEXT,
     level              TEXT,
@@ -65,7 +67,7 @@ CREATE FOREIGN TABLE dwd.dwd_mip_author_detail_inc_hourly
 ) SERVER obs_server
 OPTIONS (
 format 'orc',
-foldername '/donson-mip-data/prod/dwd/author',
+foldername '/donson-mip-data/prod/dwd/author/',
 encoding 'utf8',
 totalrows '100000'
 )

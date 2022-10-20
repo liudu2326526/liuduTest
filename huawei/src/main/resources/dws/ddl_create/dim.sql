@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS dim.dim_author_scd_hourly
     gender             INTEGER COMMENT '0=未知 1=男 2=女',
     industry           TEXT COMMENT '行业',
     brand_cooperation  TEXT COMMENT '合作品牌',
-    company            VARCHAR(64) COMMENT '公司',
-    email              VARCHAR(32) COMMENT '电子邮件',
+    company            TEXT COMMENT '公司',
+    email              TEXT COMMENT '电子邮件',
     school             VARCHAR(64) COMMENT '学校',
-    website            VARCHAR(255) COMMENT '网站',
+    website            TEXT COMMENT '网站',
     kol_level          INTEGER COMMENT 'kol 等级',
     gc_type            VARCHAR(6) COMMENT '内容类型',
     category           TEXT COMMENT '作者平台分类,如有多级分类，大在前',
@@ -40,6 +40,13 @@ CREATE TABLE IF NOT EXISTS dim.dim_author_scd_hourly
     country            VARCHAR(255) COMMENT '国家',
     province           VARCHAR(255) COMMENT '省份',
     city               VARCHAR(255) COMMENT '城市',
+    follow_cnt         BIGINT,
+    fans_cnt           BIGINT,
+    works_cnt          BIGINT,
+    music_cnt          BIGINT,
+    praised_cnt        BIGINT,
+    forward_cnt        BIGINT,
+    comment_cnt        BIGINT,
     ctime              BIGINT COMMENT '创建时间',
     mtime              BIGINT COMMENT '采集时间'
 )
@@ -69,10 +76,10 @@ DROP FOREIGN TABLE dim.china_area;
 CREATE FOREIGN TABLE dim.china_area
 (
     id       INTEGER,
-    country  char(50),
-    province char(50),
-    city     char(50),
-    region   char(50)
+    country  CHAR(50),
+    province CHAR(50),
+    city     CHAR(50),
+    region   CHAR(50)
 ) SERVER gsmpp_server
 OPTIONS(
     LOCATION 'obs://donson-mip-data/prod/dim/china_area',
@@ -86,3 +93,16 @@ OPTIONS(
     ignore_extra_data 'true'
 )
 READ ONLY
+
+-- dim.dim_kol_level
+
+DROP TABLE dim.china_area_none_region;
+
+CREATE TABLE IF NOT EXISTS dim.china_area_none_region
+(
+    country  CHAR(50) NOT NULL COMMENT '国家',
+    province CHAR(50) NOT NULL COMMENT '省份',
+    city     CHAR(50) NOT NULL COMMENT '城市',
+    CONSTRAINT pk_china_area_none_region PRIMARY KEY (country, province, city)
+)
+WITH (ORIENTATION = COLUMN, COLVERSION=2.0, ENABLE_DELTA = ON);
