@@ -21,15 +21,16 @@ public class KafkaProducerTest {
 //        System.out.println(s1);
 
         Properties conf = new Properties();
-        conf.setProperty(BOOTSTRAP_SERVERS_CONFIG, "139.9.211.253:9092");
+        conf.setProperty(BOOTSTRAP_SERVERS_CONFIG, "116.63.66.114:9094,116.63.68.191:9094,122.9.100.78:9094");
         conf.put(ACKS_CONFIG, "all");
         conf.put(KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         conf.put(VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         KafkaProducer<String, String> producer = new KafkaProducer<>(conf);
-        String toTopic = "test_liudu";
+        String toTopic = "test_liudu2";
         List<String> list = Lists.newArrayList(s1, s2, s3);
         String key = null;
         for (String value : list) {
+            System.out.println(value);
             ProducerRecord<String, String> record = new ProducerRecord<>(toTopic, key, value);
             try {
                 // 简单的直接send，在消费的时候，是消费不到的

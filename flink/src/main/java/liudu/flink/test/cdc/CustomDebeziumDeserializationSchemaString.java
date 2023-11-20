@@ -19,14 +19,14 @@ import org.slf4j.LoggerFactory;
  * @description: TODO
  * @date 2022/6/24下午3:03
  */
-public class CustomDebeziumDeserializationSchema implements
-    DebeziumDeserializationSchema<JSONObject> {
+public class CustomDebeziumDeserializationSchemaString implements
+    DebeziumDeserializationSchema<String> {
 
   @Override
-  public void deserialize(SourceRecord sourceRecord, Collector<JSONObject> collector)
+  public void deserialize(SourceRecord sourceRecord, Collector<String> collector)
       throws Exception {
 
-    final Logger LOGGER = LoggerFactory.getLogger(CustomDebeziumDeserializationSchema.class);
+    final Logger LOGGER = LoggerFactory.getLogger(CustomDebeziumDeserializationSchemaString.class);
 
     final long serialVersionUID = 7906905121308228264L;
 
@@ -41,29 +41,16 @@ public class CustomDebeziumDeserializationSchema implements
       if (afterStruct != null && beforeStruct != null) {
         // 修改
         System.out.println("Updating >>>>>>>");
-        List<Field> fields = afterStruct.schema().fields();
-        String name;
-        Object value;
-        for (Field field : fields) {
-          name = field.name();
-          value = afterStruct.get(name);
-          resJson.put(name, value);
-        }
+        parse(afterStruct, resJson, "update");
         LOGGER.info("Updated, ignored ...");
       } else if (afterStruct != null) {
         // 插入
         System.out.println("Inserting >>>>>>>");
-        List<Field> fields = afterStruct.schema().fields();
-        String name;
-        Object value;
-        for (Field field : fields) {
-          name = field.name();
-          value = afterStruct.get(name);
-          resJson.put(name, value);
-        }
+        parse(afterStruct, resJson, "insert");
       } else if (beforeStruct != null) {
         // 删除
         System.out.println("Deleting >>>>>>>");
+        parse(beforeStruct, resJson, "delete");
         LOGGER.info("Deleted, ignored ...");
       } else {
         System.out.println("No this operation ...");
@@ -73,9 +60,23 @@ public class CustomDebeziumDeserializationSchema implements
       System.out.println("Deserialize throws exception:");
       LOGGER.error("Deserialize throws exception:", e);
     }
-    resJson.put("log_time", System.currentTimeMillis());
-    collector.collect(resJson);
 
+    collector.collect(resJson.toJSONString());
+
+  }
+
+  private JSONObject parse(Struct struct, JSONObject resJson, String type) {
+    List<Field> fields = struct.schema().fields();
+    String name;
+    Object value;
+    for (Field field : fields) {
+      name = field.name();
+      value = struct.get(name);
+      resJson.put(name, value);
+    }
+    resJson.put("log_time", System.currentTimeMillis());
+    resJson.put("op_type", type);
+    return resJson;
   }
 
   private void putSchema(Struct struct, JSONObject resJson) {
@@ -84,7 +85,7 @@ public class CustomDebeziumDeserializationSchema implements
   }
 
   @Override
-  public TypeInformation<JSONObject> getProducedType() {
-    return BasicTypeInfo.of(JSONObject.class);
+  public TypeInformation<String> getProducedType() {
+    return BasicTypeInfo.of(String.class);
   }
 }
