@@ -1,30 +1,14 @@
-package liudu.leetcode;
-
-public class Number122 {
-
+package liudu.leetcode;/**
+*@author Liu Du
+*@Date 2023/12/4 
+*/public class Number122 {
   public int maxProfit(int[] prices) {
     int oneIndex = 0;
-    int num = 0;
+    int twoIndex = 0;
 
-    int length = prices.length;
 
-    if (length <= 1) {
-      return 0;
-    }
 
-    for (int i = 1; i < length; i++) {
-      if (prices[i] < prices[i - 1]) {
-        num = prices[i - 1] - prices[oneIndex] + num;
-        oneIndex = i;
-      }
-    }
-
-    if (oneIndex != length - 1) {
-      num = prices[length - 1] - prices[oneIndex] + num;
-    }
-
-    return num;
+    return 0;
   }
-
 
 }

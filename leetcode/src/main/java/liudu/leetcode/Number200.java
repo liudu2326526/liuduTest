@@ -5,9 +5,9 @@ public class Number200 {
   public static void main(String[] args) {
     char[][] chars = {
         {'1', '1', '1', '1', '0'},
-        {'1', '1', '0', '1', '0'},
         {'1', '1', '0', '0', '0'},
-        {'0', '0', '0', '0', '0'}
+        {'1', '1', '0', '1', '0'},
+        {'0', '0', '0', '0', '1'}
     };
     System.out.println(new Number200().numIslands(chars));
   }
@@ -27,8 +27,6 @@ public class Number200 {
           dfs(i, j, grid);
           return true;
         }
-
-
       }
     }
 
