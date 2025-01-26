@@ -14,54 +14,71 @@ public class Number25 {
     listNode3.next = listNode4;
     listNode4.next = listNode5;
 
-    new Number25().reverseKGroup(listNode1, 2);
+    System.out.println(new Number25().reverseKGroup(listNode1, 3));
+//    System.out.println(new Number25().reverse(listNode1));
   }
 
   public ListNode reverseKGroup(ListNode head, int k) {
+    ListNode newHead = new ListNode();
+    newHead.next = head;
 
+    ListNode preTail = newHead;
+    ListNode nextHead = head;
+    ListNode nextTail = null;
+    int i;
     ListNode index = head;
-    ListNode newHead = null;
-    ListNode pre = null;
 
-    while (true) {
-      int x = k;
-      ListNode now = index;
-      while (x > 0 && index != null) {
-        x--;
-        index = index.next;
+    while (index != null) {
+
+      for (i = 0; i < k; i++) {
+
+        if (index != null) {
+          if (i == k-1){
+            nextHead = index.next;
+            index.next = null;
+            index = nextHead;
+          } else {
+            index = index.next;
+          }
+        } else {
+          break;
+        }
       }
 
-      if (x > 0) {
-        break;
+      if ( i == k){
+        preTail.next = reverse(head);
+        preTail = head;
+        head = nextHead;
+      } else {
+        preTail.next = nextHead;
       }
-      ListNode reverse = reverse(now, k);
-      if (newHead == null) {
-        newHead = reverse;
-      }
-      if (pre != null) {
-        pre.next = reverse;
-      }
-      pre = now;
-      now.next = index;
-
 
     }
 
-    return newHead;
+
+    return newHead.next;
   }
 
-  private ListNode reverse(ListNode head, int number) {
+  private ListNode reverse(ListNode head) {
     ListNode pre = null;
     ListNode index = head;
 
-    for (int i = 0; i < number; i++) {
-      ListNode next = index.next;
+    if (head.next == null) {
+      return head;
+    }
+
+    ListNode next = index.next;
+
+    while (next != null) {
       index.next = pre;
       pre = index;
       index = next;
+      next = index.next;
     }
 
-    return pre;
+    index.next = pre;
+
+    return index;
   }
 
 }

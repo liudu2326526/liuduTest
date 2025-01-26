@@ -1,59 +1,60 @@
 package liudu.leetcode;
 
-/**
- * @author Liu Du
- * @Date 2024/11/11
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Number300 {
 
+
   public static void main(String[] args) {
+
     Number300 number300 = new Number300();
-    int[] ints = {0, 1, 0, 3, 2, 3};
-    System.out.println(number300.lengthOfLIS(ints));
+    ArrayList<Integer> integers = new ArrayList<>();
+    integers.add(1);
+    integers.add(3);
+    integers.add(5);
+    integers.add(7);
+    integers.add(9);
+    System.out.println(number300.binarySearch(integers, 6, 0, integers.size() - 1));
+
+    System.out.println(integers);
+    integers.remove(1);
+    integers.add(1, 2);
+    System.out.println(integers);
+
   }
+
 
   public int lengthOfLIS(int[] nums) {
-    if (nums.length == 0) {
-      return 0;
-    }
-    int[] dp = new int[nums.length];
-    dp[0] = 1;
-    int max = 1;
+    ArrayList<Integer> integers = new ArrayList<>();
+    integers.add(nums[0]);
     for (int i = 1; i < nums.length; i++) {
-      dp[i] = 1;
-      for (int j = 0; j < i; j++) {
-
-        if (nums[i] > nums[j]) {
-          dp[i] = Math.max(dp[i], dp[j] + 1);
-        }
-
+      if (nums[i] > integers.get(integers.size() - 1)) {
+        integers.add(nums[i]);
+      } else {
+        int index = binarySearch(integers, nums[i], 0, integers.size() - 1);
+        integers.remove(index);
+        integers.add(index, nums[i]);
       }
-
-      max = Math.max(max, dp[i]);
     }
 
-    return max;
+    return integers.size();
   }
 
+  public int binarySearch(List<Integer> list, int value, int left, int right) {
+    if (left == right) {
+      return left;
+    }
 
-  public int lengthOfLIS1(int[] nums) {
-    if (nums.length == 0) {
-      return 0;
+    int mid = (left + right) / 2;
+
+    if (list.get(mid) > value) {
+      return binarySearch(list, value, left, mid);
+    } else if (list.get(mid) < value) {
+      return binarySearch(list, value, mid + 1, right);
+    } else {
+      return mid;
     }
-    int[] dp = new int[nums.length];
-    dp[0] = 1;
-    int maxans = 1;
-    for (int i = 1; i < nums.length; i++) {
-      dp[i] = 1;
-      for (int j = 0; j < i; j++) {
-        if (nums[i] > nums[j]) {
-          dp[i] = Math.max(dp[i], dp[j] + 1);
-        }
-      }
-      maxans = Math.max(maxans, dp[i]);
-    }
-    return maxans;
   }
-
 
 }
