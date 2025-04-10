@@ -1,4 +1,11 @@
 def quick_sort(arr, left, right):
+  """
+  原地快排
+  :param arr: 待排序的列表
+  :param left: 左索引
+  :param right: 右索引
+  :return:
+  """
   # 终止条件
   if right > left:
     pivot_index = partition(arr, left, right)
