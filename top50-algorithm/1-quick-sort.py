@@ -22,15 +22,14 @@ def partition(arr, low, high):
   :param high: 分区结束索引（pivot 选择此位置的值）
   :return: pivot 排序后的正确索引位置
   """
-  # 选择最后一个数作为基准
+
   pivot = arr[high]
   i = low - 1
+
   for j in range(low, high):
-    if pivot < arr[j]:
+    if arr[j] < pivot:
       i += 1
-      # 交换位置
       arr[i], arr[j] = arr[j], arr[i]
-  # 最后把 pivot 放到它的正确位置（i+1）
 
   arr[i + 1], arr[high] = arr[high], arr[i + 1]
 
