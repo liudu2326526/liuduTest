@@ -1,4 +1,4 @@
-package liudu;
+package liudu.leetcode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
